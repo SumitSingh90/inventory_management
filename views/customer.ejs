@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Customers</title>
+  <link rel="stylesheet" href="/css/customer.css">
+</head>
+<body>
+  <!-- Navbar -->
+   <%- include('nav') %> 
+  <!-- Customers Section -->
+  <main class="dashboard">
+    <h2>Manage Customers</h2>
+
+    <!-- Add Customer Form -->
+    <section class="form-section">
+      <h3>Add New Customer</h3>
+      <form id="customerForm" action="/add-customer/cust" method="post">
+        <input type="text" id="customerName" placeholder="Customer Name" name="name" required>
+        <input type="text" id="customerContact" placeholder="Contact Number" name="contact" required>
+        <button type="submit">Add Customer</button>
+      </form>
+    </section>
+
+    <!-- Customers Table -->
+    <section class="table-section">
+      <h3>Customer List</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Contact</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% customers.forEach(customer => { %>
+            <tr>
+              <td><%= customer.customer_id %></td>
+              <td><%= customer.name %></td>
+              <td><%= customer.mobile %></td>
+            </tr>
+          <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/js/customers.js"></script>
+</body>
+</html>

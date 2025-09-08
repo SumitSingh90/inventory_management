@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Items</title>
+  <link rel="stylesheet" href="/css/items.css">
+</head>
+<body>
+  <!-- Navbar -->
+ <%- include('nav') %> 
+
+  <!-- Items Section -->
+  <main class="dashboard">
+    <h2>Manage Items</h2>
+
+    <!-- Add Item Form -->
+   <section class="form-section">
+  <h3>Add New Item</h3>
+  <form id="itemForm" action="/add-items/product" method="post">
+    <input type="text" id="itemId" placeholder="Item Id" name="item_id" required>
+    <input type="text" id="itemName" placeholder="Item Name" name="item_name" required>
+    <input type="text" id="itemCategory" placeholder="Category (Cement/Bricks)" name="category" required>
+    <input type="number" id="itemPrice" placeholder="Price per Unit" name="price" required>
+    <input type="number" id="stockAdded" placeholder="Stock Added" name="stock_added" required>
+    <button type="submit">Add Item</button>
+  </form>
+
+  <div id="responseMessage" style="margin-top:10px; color:green;"></div>
+</section>
+    <!-- Items Table -->
+    <section class="table-section">
+      <h3>Available Items</h3>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Category</th>
+            <th>Price/Unit</th>
+            <th>Total Stock</th>
+            <th>Date</th>
+          </tr>
+        </thead>
+        <tbody id="itemsTable">
+          <!-- JS will insert rows here -->
+         <% items.forEach(item => { %>
+        <tr>
+          <td><%= item.item_name %></td>
+          <td><%= item.category %></td>
+          <td>₹<%= item.latest_price %></td>
+          <td><%= item.total_stock %></td>
+          <td><%= item.latest_date ? item.latest_date.toISOString().split('T')[0] : '-' %></td>
+        </tr>
+      <% }) %>
+        </tbody>
+      </table>
+    </section>
+  </main>
+
+  <script src="/js/items.js"></script>
+</body>
+</html>

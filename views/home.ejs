@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vendor Management System</title>
+  <link rel="stylesheet" href="/css/home.css">
+</head>
+
+<body>
+  <!-- Header -->
+   <%- include('nav') %> 
+  <!-- Main Dashboard -->
+  <main class="dashboard">
+
+    <h2>Dashboard Overview</h2>
+    <section class="stats">
+
+      <div class="card">
+        <h3>Total Sales (This Month)</h3>
+        <p id="totalSales"><%=total[0].month_total%></p>
+      </div>
+
+      <div class="card">
+        <h3>Items in Stock</h3>
+        <p id="itemsStock">0</p>
+      </div>
+
+      <div class="card">
+        <h3>Today’s Sales</h3>
+        <p id="todaySales"><%=today[0].today_sale%></p>
+      </div>
+      
+      <div class="card">
+        <h3>Top Customer</h3>
+        <p id="topCustomer">-</p>
+      </div>
+    </section>
+
+    <!-- Recent Sales Table -->
+    <section class="table-section">
+      <h2>Recent Sales</h2>
+       <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% sales.forEach(row => { %>
+        <tr>
+          <td><%= row.date.toISOString().split('T')[0] %></td>
+          <td><%= row.customer || 'N/A' %></td>
+          <td><%= row.item %></td>
+          <td><%= row.quantity %></td>
+          <td><%= row.total %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+    </section>
+  </main>
+
+  <script src="js/app.js"></script>
+</body>
+
+</html>

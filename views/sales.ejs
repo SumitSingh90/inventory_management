@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sales</title>
+  <link rel="stylesheet" href="/css/sales.css">
+</head>
+<body>
+  <!-- Navbar -->
+   <%- include('nav') %> 
+
+  <!-- Sales Section -->
+  <main class="dashboard">
+    <h2>Record a Sale</h2>
+
+    <!-- Sale Form -->
+    <section class="form-section">
+      <form id="saleForm" action="/add-sale/sl" method="post">
+
+        <select id="customerSelect" name="customer_id" required>
+      <option value="">Select Customer</option>
+      <% customers.forEach(customer => { %>
+        <option value="<%= customer.customer_id %>">
+          <%= customer.name %> (ID: <%= customer.customer_id %>)
+        </option>
+      <% }) %>
+    </select>
+        <select id="itemSelect" name="itemSelect" required>
+        <% items.forEach(item => { %>
+          <option value="<%= item.item_id %>"><%= item.item_name %></option>
+        <% }) %>
+        </select>
+
+
+        <input type="number" id="quantity" placeholder="Quantity" min="1" name="quantity" required>
+        <button type="submit">Add Sale</button>
+      </form>
+    </section>
+
+    <!-- Sales Table -->
+    <section class="table-section">
+  <h3>Sales History</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>Date</th>
+        <th>Customer</th>
+        <th>Item</th>
+        <th>Quantity</th>
+        <th>Total</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% sales.forEach(row => { %>
+        <tr>
+          <td><%= row.date.toISOString().split('T')[0] %></td>
+          <td><%= row.customer || 'N/A' %></td>
+          <td><%= row.item %></td>
+          <td><%= row.quantity %></td>
+          <td><%= row.total %></td>
+        </tr>
+      <% }) %>
+    </tbody>
+  </table>
+</section>
+
+  </main>
+
+  <script src="js/sales.js"></script>
+</body>
+</html>
