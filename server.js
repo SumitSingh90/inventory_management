@@ -48,6 +48,10 @@ app.get("/", async (req, res) => {
                   WHERE YEAR(s_date) = YEAR(CURDATE())
                   AND MONTH(s_date) = MONTH(CURDATE());
   `);
+    console.log(total);
+  if(total[0].month_total==null){
+    total[0].month_total = 0;
+  }
 
   let [today] = await con.execute(`
 SELECT COALESCE(SUM(price), 0) AS today_sale
@@ -62,9 +66,22 @@ WHERE DATE(s_date) = CURDATE();  `);
   `);
   if(customer.length ==0) cus_name= "---";
   else cus_name = customer[0].name;
+  
+  const [topProductResult] = await con.query(
+      `SELECT item_name AS topProduct, SUM(quantity) AS totalSold
+       FROM sales 
+       INNER JOIN item ON sales.item_id = item.item_id
+       WHERE YEAR(s_date) = YEAR(CURDATE())
+       GROUP BY sales.item_id
+       ORDER BY totalSold DESC
+       LIMIT 1`
+    );
+
+    const topProductYear = topProductResult[0] || { topProduct: "No data", totalSold: 0 };
 
 
-  res.render("home", { sales, total, today,cus_name });
+  res.render("home", { sales, total, today, cus_name, topProductYear });
+
 })
 
 

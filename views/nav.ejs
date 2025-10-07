@@ -1,60 +1,73 @@
 <style> 
-  .navbar {
+ 
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #2c3e50;
+  background-color: #f4f6f9;
+}
+
+/* Navbar container */
+.navbar {
+  position: sticky;          /* stays at the top but scrolls with page */
+  top: 0;
+  z-index: 1000;
   background: #2c3e50;
   color: #fff;
   padding: 15px 20px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
 }
 
+/* Brand title */
 .navbar h1 {
   font-size: 20px;
-  color:white;
+  color: #fff;
+  margin: 0;
+  font-weight: 600;
 }
 
+/* Nav links */
 .navbar nav a {
   color: #fff;
   margin-left: 15px;
   text-decoration: none;
   font-weight: 500;
+  font-size: 15px;
+  transition: color 0.2s ease;
 }
 
+/* Hover effect */
 .navbar nav a:hover {
   text-decoration: underline;
 }
 
-/* Dashboard */
-.dashboard {
-  padding: 20px;
+/* Active link (optional highlight) */
+.navbar nav a.active {
+  text-decoration: underline;
 }
 
-.stats {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 20px;
-  margin: 20px 0;
+/* Ensure consistent spacing below navbar for all pages */
+main, .dashboard, .report-container {
+  padding-top: 20px;
 }
 
-.card {
-  background: #fff;
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0px 3px 6px rgba(0,0,0,0.1);
-  text-align: center;
+/* Responsive navbar behavior */
+@media (max-width: 700px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .navbar nav {
+    margin-top: 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
 }
 
-.card h3 {
-  font-size: 16px;
-  margin-bottom: 10px;
-  color: #555;
-}
-
-.card p {
-  font-size: 22px;
-  font-weight: bold;
-  color: #2c3e50;
-}
 </style>
 <header class="navbar">
   <h1>Vendor Management</h1>

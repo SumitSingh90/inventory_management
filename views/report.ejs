@@ -5,74 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sales Report</title>
   <link rel="stylesheet" href="/css/report.css" />
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f8f9fa;
-      margin: 0;
-      padding: 0;
-    }
-    main {
-      padding: 30px;
-      max-width: 1000px;
-      margin: auto;
-    }
-    h1, h2, h3 {
-      color: #333;
-    }
-    .filters {
-      background: #fff;
-      padding: 15px;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-    label {
-      font-weight: bold;
-      color: #555;
-    }
-    input[type="date"] {
-      padding: 8px;
-      border: 1px solid #ccc;
-      border-radius: 6px;
-    }
-    button {
-      background: #007bff;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 10px 16px;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    button:hover {
-      background: #0056b3;
-    }
-    .card {
-      background: #fff;
-      padding: 20px;
-      border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-      margin-bottom: 20px;
-    }
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
-    }
-    th, td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    th {
-      background: #f1f1f1;
-    }
-  </style>
 </head>
 <body>
   <%- include('nav') %>
@@ -93,7 +25,7 @@
     <section id="reportSummary" style="display:none;">
       <div class="card">
         <h2>Summary</h2>
-        <p><strong>Total Sales:</strong> <span id="totalSales">$0</span></p>
+        <p><strong>Total Sales:</strong> <span id="totalSales">₹0</span></p>
         <p><strong>Highest Selling Product:</strong> <span id="topProduct">-</span></p>
         <p><strong>Highest Purchasing Customer:</strong> <span id="topCustomer">-</span></p>
       </div>

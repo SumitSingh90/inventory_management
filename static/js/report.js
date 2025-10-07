@@ -32,7 +32,7 @@ async function generateReport() {
 
     // Update summary
     document.getElementById('reportSummary').style.display = 'block';
-    document.getElementById('totalSales').innerText = `$${(data.totalSales || 0).toLocaleString()}`;
+    document.getElementById('totalSales').innerText = `₹${(data.totalSales || 0).toLocaleString()}`;
     document.getElementById('topProduct').innerText = data.topProduct || '-';
     document.getElementById('topCustomer').innerText = data.topCustomer || '-';
 
@@ -45,7 +45,7 @@ async function generateReport() {
         <tr>
           <td>${prod["Product Name"]}</td>
           <td>${prod["Quantity Sold"]}</td>
-          <td>$${Number(prod["Total Value"]).toLocaleString()}</td>
+          <td>₹${Number(prod["Total Value"]).toLocaleString()}</td>
         </tr>
       `;
     });
