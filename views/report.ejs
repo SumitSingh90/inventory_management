@@ -1,134 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Sales Report</title>
-  <link rel="stylesheet" href="/css/report.css">
+  <link rel="stylesheet" href="/css/report.css" />
   <style>
-    body { font-family: Arial, sans-serif; background: #f9f9f9; margin: 0; padding: 0; }
-    main { padding: 20px; }
-    h1, h2, h3 { color: #333; }
-    .summary { display: flex; gap: 20px; margin-bottom: 30px; }
-    .card { flex: 1; min-width: 200px; padding: 15px; border-radius: 10px; background: #fff; box-shadow: 0 2px 6px rgba(0,0,0,0.1); }
-    .tabs { display: flex; gap: 10px; margin-bottom: 20px; }
-    .tab-btn { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; background: #eee; }
-    .tab-btn.active { background: #333; color: #fff; }
-    .report-section { display: none; }
-    .report-section.active { display: block; }
-    ol { padding-left: 20px; }
+    body {
+      font-family: Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+    }
+    main {
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1, h2, h3 {
+      color: #333;
+    }
+    .filters {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+    label {
+      font-weight: bold;
+      color: #555;
+    }
+    input[type="date"] {
+      padding: 8px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+    .card {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 10px;
+    }
+    th, td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    th {
+      background: #f1f1f1;
+    }
   </style>
 </head>
 <body>
-  <%- include('nav') %> 
+  <%- include('nav') %>
 
   <main>
     <h1>Sales Report</h1>
 
-    <!-- Summary Cards -->
-    <section class="summary">
-      <div class="card">
-        <h3>Total Sales</h3>
-        <p>$120,000</p>
-      </div>
-      <div class="card">
-        <h3>Top Seller</h3>
-        <p>Vendor X</p>
-      </div>
-      <div class="card">
-        <h3>Top Product</h3>
-        <p>Product Alpha</p>
-      </div>
-      <div class="card">
-        <h3>Avg Order Value</h3>
-        <p>$340</p>
-      </div>
+    <!-- Date Range Filter -->
+    <section class="filters">
+      <label for="fromDate">From:</label>
+      <input type="date" id="fromDate" />
+      <label for="toDate">To:</label>
+      <input type="date" id="toDate" />
+      <button onclick="generateReport()">Generate Report</button>
     </section>
 
-    <!-- Tabs -->
-    <div class="tabs">
-      <button class="tab-btn active" onclick="showTab('fourM')">Last 4 Months</button>
-      <button class="tab-btn" onclick="showTab('sixM')">Last 6 Months</button>
-      <button class="tab-btn" onclick="showTab('oneY')">Last 1 Year</button>
-    </div>
+    <!-- Report Summary -->
+    <section id="reportSummary" style="display:none;">
+      <div class="card">
+        <h2>Summary</h2>
+        <p><strong>Total Sales:</strong> <span id="totalSales">$0</span></p>
+        <p><strong>Highest Selling Product:</strong> <span id="topProduct">-</span></p>
+        <p><strong>Highest Purchasing Customer:</strong> <span id="topCustomer">-</span></p>
+      </div>
 
-    <!-- 4-Month Report -->
-    <section id="fourM" class="report-section active">
-      <h2>Last 4 Months</h2>
       <div class="card">
-        <h3>Highest Seller</h3>
-        <p>Vendor A</p>
-      </div>
-      <div class="card">
-        <h3>Highest Selling Product</h3>
-        <p>Product X</p>
-      </div>
-      <div class="card">
-        <h3>Top 5 Customers</h3>
-        <ol>
-          <li>Customer 1 - $5000</li>
-          <li>Customer 2 - $4200</li>
-          <li>Customer 3 - $3900</li>
-          <li>Customer 4 - $3100</li>
-          <li>Customer 5 - $2900</li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 6-Month Report -->
-    <section id="sixM" class="report-section">
-      <h2>Last 6 Months</h2>
-      <div class="card">
-        <h3>Highest Seller</h3>
-        <p>Vendor B</p>
-      </div>
-      <div class="card">
-        <h3>Highest Selling Product</h3>
-        <p>Product Y</p>
-      </div>
-      <div class="card">
-        <h3>Top 5 Customers</h3>
-        <ol>
-          <li>Customer A - $7000</li>
-          <li>Customer B - $6500</li>
-          <li>Customer C - $6000</li>
-          <li>Customer D - $5200</li>
-          <li>Customer E - $4800</li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 1-Year Report -->
-    <section id="oneY" class="report-section">
-      <h2>Last 1 Year</h2>
-      <div class="card">
-        <h3>Highest Seller</h3>
-        <p>Vendor C</p>
-      </div>
-      <div class="card">
-        <h3>Highest Selling Product</h3>
-        <p>Product Z</p>
-      </div>
-      <div class="card">
-        <h3>Top 5 Customers</h3>
-        <ol>
-          <li>Customer X - $15000</li>
-          <li>Customer Y - $14200</li>
-          <li>Customer Z - $13900</li>
-          <li>Customer W - $13100</li>
-          <li>Customer V - $12900</li>
-        </ol>
+        <h3>Product Sales Breakdown</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th>Quantity Sold</th>
+              <th>Total Value</th>
+            </tr>
+          </thead>
+          <tbody id="productTable"></tbody>
+        </table>
       </div>
     </section>
   </main>
 
-  <script>
-    function showTab(tabId) {
-      document.querySelectorAll('.report-section').forEach(sec => sec.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-      document.getElementById(tabId).classList.add('active');
-      event.target.classList.add('active');
-    }
-  </script>
+  <script src="/js/report.js"></script>
 </body>
 </html>

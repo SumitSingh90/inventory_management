@@ -54,7 +54,17 @@ SELECT COALESCE(SUM(price), 0) AS today_sale
 FROM sales
 WHERE DATE(s_date) = CURDATE();  `);
 
-  res.render("home", { sales, total, today });
+  let [customer] = await con.execute(`
+      select  name ,sum(price)
+       from sales left join customer 
+       on sales.customer_id = customer.customer_id
+       group by name order by sum(price) desc limit 1 ;
+  `);
+  if(customer.length ==0) cus_name= "---";
+  else cus_name = customer[0].name;
+
+
+  res.render("home", { sales, total, today,cus_name });
 })
 
 
@@ -119,7 +129,7 @@ app.get("/sales", async (req, res) => {
   LEFT JOIN item i ON s.item_id = i.item_id
   ORDER BY s.s_date DESC;
 `);
-
+      console.log(sales);
     // Render the sales page with items and customers
     res.render("sales", { items, customers, sales });
   } catch (err) {
@@ -147,9 +157,76 @@ app.get("/customers", async (req, res) => {
   }
 })
 
-app.get("/report",(req,res)=>{
+app.get("/report", (req, res) => {
   res.render("report");
 })
+
+app.post('/report/data', async (req, res) => {
+  const con = await connection();
+  try {
+    const { fromDate, toDate } = req.body;
+
+    if (!fromDate || !toDate) {
+      return res.status(400).json({ error: 'Missing date range' });
+    }
+
+    // Run all your queries
+    const [totalSalesResult] = await con.query(
+      `SELECT SUM(price) AS totalSales 
+       FROM sales 
+       WHERE s_date BETWEEN ? AND ?`, [fromDate, toDate]
+    );
+
+    const [topProductResult] = await con.query(
+      `SELECT item_name 
+       FROM (
+         SELECT SUM(quantity) AS q, sales.item_id, item_name 
+         FROM sales 
+         INNER JOIN item ON sales.item_id = item.item_id
+         WHERE s_date BETWEEN ? AND ?
+         GROUP BY sales.item_id
+       ) AS s 
+       ORDER BY q DESC 
+       LIMIT 1`, [fromDate, toDate]
+    );
+
+    const [topCustomerResult] = await con.query(
+      `SELECT name 
+       FROM (
+         SELECT SUM(price) AS p, sales.customer_id, name 
+         FROM sales 
+         INNER JOIN customer ON sales.customer_id = customer.customer_id
+         WHERE s_date BETWEEN ? AND ?
+         GROUP BY sales.customer_id
+       ) AS s 
+       ORDER BY p DESC 
+       LIMIT 1`, [fromDate, toDate]
+    );
+
+    const [productInfo] = await con.query(
+      `SELECT item_name AS "Product Name", 
+              SUM(quantity) AS "Quantity Sold", 
+              SUM(price) AS "Total Value"
+       FROM sales 
+       INNER JOIN item ON sales.item_id = item.item_id
+       WHERE s_date BETWEEN ? AND ?
+       GROUP BY item_name`, [fromDate, toDate]
+    );
+
+    res.json({
+      totalSales: totalSalesResult[0]?.totalSales || 0,
+      topProduct: topProductResult[0]?.item_name || null,
+      topCustomer: topCustomerResult[0]?.name || null,
+      productInfo
+    });
+
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Database query failed' });
+  }
+});
+
+
 
 app.listen(5000, "0.0.0.0", (err) => {
   console.log("server is running at http//localhost:5000");

@@ -24,7 +24,6 @@ router.post("/cust", async (req, res) => {
       [name, contact]
     );
 
-    
     res.redirect("/customers");
 
   } catch (err) {
